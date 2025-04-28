@@ -16,8 +16,8 @@ router.post("/login", [
     body("password").isLength({ min: 6 }).withMessage("Password must be at least 6 characters long"),
 ], login);
 
-router.get("/userData/:userId", authMiddleware, getUserData);
-router.put("/updateUserData/:userId", authMiddleware, updateUserData);
+router.get("/userData", authMiddleware, getUserData);
+router.put("/updateUserData", authMiddleware, updateUserData);
 
 router.get("/admin", authMiddleware, adminMiddleware, (req, res) => {
     res.status(200).json({ message: "Welcome to the admin route" });
