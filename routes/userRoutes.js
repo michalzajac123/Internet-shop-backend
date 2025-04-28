@@ -22,3 +22,5 @@ router.put("/updateUserData", authMiddleware, updateUserData);
 router.get("/admin", authMiddleware, adminMiddleware, (req, res) => {
     res.status(200).json({ message: "Welcome to the admin route" });
 });
+
+export default router;

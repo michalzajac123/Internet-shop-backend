@@ -1,6 +1,6 @@
 import { validationResult } from "express-validator";
 import User from "../models/User.js";
-import bcrypt from "bcryptjs";
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 /**
  * This function handles user registration.
@@ -19,13 +19,13 @@ export const register = async (req, res) => {
         // Check if the user already exists
         const existingUser = await User.findOne({ email });
         if(existingUser){
-            return res.status(422).json({ message: "User already exists" });
+            return res.status(422).json({ message: "User already exists" }); // If user already exists, send a 422 response
         }
         // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10); // Hash the password with a salt rounds of 10
 
-        const boyProfilePic = `https://avatar.iran.liara.run/public/boy?username=${username}`
-		const girlProfilePic = `https://avatar.iran.liara.run/public/girl?username=${username}`
+        const boyProfilePic = `https://avatar.iran.liara.run/public/boy?username=${email}`
+		const girlProfilePic = `https://avatar.iran.liara.run/public/girl?username=${email}`
         //create a new user
         const user = await User({
             name,
