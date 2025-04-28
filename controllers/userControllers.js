@@ -28,7 +28,7 @@ export const register = async (req, res) => {
 		const girlProfilePic = `https://avatar.iran.liara.run/public/girl?username=${username}`
         //create a new user
         const user = await User({
-            username,
+            name,
             surname,
             profilePicture: gender ==="male" ? boyProfilePic : girlProfilePic,
             email,
@@ -107,14 +107,14 @@ export const updateUserData = async (req, res) => {
     if(!errors.isEmpty()) { 
         return res.status(422).json({ errors: errors.array() }); 
     }
-    const { username, surname, gender, email, password } = req.body; // Destructure data from the request body
+    const { name, surname, gender, email, password } = req.body; // Destructure data from the request body
     try {
         const user = await User.findById(req.user.id); // Find the user by ID
         if (!user) {
             return res.status(404).json({ message: "User not found" }); // If user not found, send a 404 response
         }
         // Update the user data
-        user.username = username || user.username;
+        user.name = name || user.name;
         user.surname = surname || user.surname;
         user.gender = gender || user.gender;
         user.email = email || user.email;
