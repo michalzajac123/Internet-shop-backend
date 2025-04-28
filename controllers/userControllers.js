@@ -14,7 +14,7 @@ export const register = async (req, res) => {
     if(!errors.isEmpty()) { 
         return res.status(422).json({ errors: errors.array() }); 
     }
-    const { email, password,username,surname,gender } = req.body; // Destructure data from the request body
+    const { email, password, name, surname, gender } = req.body; // Destructure data from the request body
     try{
         // Check if the user already exists
         const existingUser = await User.findOne({ email });
