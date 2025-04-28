@@ -76,6 +76,13 @@ export const login = async (req, res) => {
         return res.status(500).json({ message: "Internal server error" }); // Send a 500 response if an error occurs
     }
 }
+/**
+ * This function retrieves user data based on the user ID from the request.
+ * It excludes the password field from the response.
+ * @param {*} req - The request object containing the user ID.
+ * @param {*} res  - The response object used to send the response back to the client.
+ * @return {Promise<void>} - A promise that resolves when the user data is retrieved successfully or rejects with an error.
+ */
 export const getUserData = async (req, res) => {
     try {
         const user = await User.findById(req.user.id).select("-password"); // Find the user by ID and exclude the password field
@@ -88,6 +95,13 @@ export const getUserData = async (req, res) => {
         return res.status(500).json({ message: "Internal server error" }); // Send a 500 response if an error occurs
     }
 }
+/**
+ *  This function updates user data based on the user ID from the request.
+ * @param {*} req - The request object containing the user data to be updated.
+ * @param {*} res  - The response object used to send the response back to the client.
+ * @returns  {Promise<void>} - A promise that resolves when the user data is updated successfully or rejects with an error.
+ * @throws {Error} - Throws an error if the user is not found or if there is an internal server error.
+ */
 export const updateUserData = async (req, res) => {
     const errors = validationResult(req); // Validate the request body
     if(!errors.isEmpty()) { 
