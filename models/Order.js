@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema({
   userId: {
@@ -29,3 +29,5 @@ const orderSchema = new mongoose.Schema({
     default: "pending",
   },
 });
+
+export default mongoose.model('Order', orderSchema);

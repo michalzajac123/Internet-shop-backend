@@ -1,17 +1,17 @@
-const express = require('express');
-const { validator } = require('express-validator');
+import express from 'express';
+import { body } from 'express-validator';
 const cartRouter = express.Router();
-const cartController = require('../controllers/cartController');
+import {addToCart, getCart, removeFromCart} from '../controllers/cartController.js';
 
-cartRouter.post("/cart", 
-  validator("productId").isMongoId().withMessage("Invalid product ID"),
-  validator("quantity").isInt({ gt: 0 }).withMessage("Quantity must be greater than 0"),
-  cartController.addToCart
+cartRouter.post("/cart", [
+  body("productId").isMongoId().withMessage("Invalid product ID"),
+  body("quantity").isInt({ gt: 0 }).withMessage("Quantity must be greater than 0"),
+],
+  addToCart
 );
 
-cartRouter.get("/cart/:id", cartController.showCart);
+cartRouter.get("/cart/:id", getCart);
 
-cartRouter.delete("/cart/:id", cartController.deleteCart);
+cartRouter.delete("/cart/:id", removeFromCart);
 
-
-module.exports = cartRouter;
+export default cartRouter;

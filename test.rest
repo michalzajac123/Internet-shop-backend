@@ -1,0 +1,114 @@
+### Register a new user
+POST http://localhost:3000/user/register
+Content-Type: application/json
+
+{
+  "name": "michal",
+  "surname": "zajac",
+  "gender": "male",
+  "email": "ddd@example.com",
+  "password": "password123"
+}
+
+### Login
+POST http://localhost:3000/user/login
+Content-Type: application/json
+
+{
+  "email": "ddd@example.com",
+  "password": "password123"
+}
+
+### Get user data
+GET http://localhost:3000/user/userData
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjFhMWM0YzEyZGJmNThkMzNjYmNjYiIsImlhdCI6MTc0NzAzODAyNywiZXhwIjoxNzQ3MDQxNjI3fQ.aMCty7wZS8gl9ebGo_6zDJTixVT1wLWFArTdRIxNcDQ
+
+### Update user data
+PUT http://localhost:3000/user/updateUserData
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjFhMWM0YzEyZGJmNThkMzNjYmNjYiIsImlhdCI6MTc0NzAzODAyNywiZXhwIjoxNzQ3MDQxNjI3fQ.aMCty7wZS8gl9ebGo_6zDJTixVT1wLWFArTdRIxNcDQ
+Content-Type: application/json
+
+{
+  "name": "ddd",
+  "surname": "User",
+  "gender": "male",
+  "email": "ddd@example.com"
+}
+
+### Test Admin Access
+GET http://localhost:3000/user/admin
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjFhMWM0YzEyZGJmNThkMzNjYmNjYiIsImlhdCI6MTc0NzAzODAyNywiZXhwIjoxNzQ3MDQxNjI3fQ.aMCty7wZS8gl9ebGo_6zDJTixVT1wLWFArTdRIxNcDQ
+### Create a new product
+POST http://localhost:3000/product
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjFhMmUwNzVlOTJiNjZmZDI0Mzc4OSIsImlhdCI6MTc0NzAzNTczMiwiZXhwIjoxNzQ3MDM5MzMyfQ.fQAGiE_A1Rc91pphNow4jG3_WiY_XrXdKa4kF171_Fk
+Content-Type: application/json
+
+{
+  "name": "Test Product",
+  "description": "This is a test product",
+  "price": 19.99,
+  "photo": "https://example.com/photo.jpg",
+  "category": "Electronics",
+  "subcategory": "Smartphones"
+
+}
+
+### Get all products
+GET http://localhost:3000/products
+
+### Get product by ID
+GET http://localhost:3000/product/6821a5a960a13e26dbb7bd50
+
+### Filter products
+GET http://localhost:3000/products?category=Electronics&subcategory=Smartphones
+
+### Approve product
+PUT http://localhost:3000/product/6821a61e60a13e26dbb7bd5f/approve
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjFhMWM0YzEyZGJmNThkMzNjYmNjYiIsImlhdCI6MTc0NzAzODE5NiwiZXhwIjoxNzQ3MDQxNzk2fQ.xAz2uaitxQMlch2_Ds3H-zsIeU6J6PJiGts5r05RmGE
+
+### Get all categories
+GET http://localhost:3000/categories
+
+### Add to cart
+POST http://localhost:3000/cart
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjFhMWM0YzEyZGJmNThkMzNjYmNjYiIsImlhdCI6MTc0NzAzNzYwOSwiZXhwIjoxNzQ3MDQxMjA5fQ.EluH3EpVqm117jN0fCDSjzcGGMjpXzsmQx1KMpt1evE
+Content-Type: application/json
+
+{
+  "productId": "6821a5cc60a13e26dbb7bd52",
+  "quantity": 2
+}
+
+### Get cart
+GET http://localhost:3000/cart/6821a2e075e92b66fd243789
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjFhMWM0YzEyZGJmNThkMzNjYmNjYiIsImlhdCI6MTc0NzAzNjQ4OCwiZXhwIjoxNzQ3MDQwMDg4fQ.0wqzCTRIvCkjkp5FuHHRP59tsz_LN0OFuTWO8RoQIGY
+
+### Remove from cart
+DELETE http://localhost:3000/cart/60d21b4667d0d8992e610c86
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjE5ZWY1NzYwMjIyYmFjY2IzYjU4YyIsImlhdCI6MTc0NzAzMzg1MywiZXhwIjoxNzQ3MDM3NDUzfQ.VTfTknJWOVf6t09q6-rv_Y7aKPqMr1nnVYXO91yFQvM
+Content-Type: application/json
+
+{
+  "productId": "60d21b4667d0d8992e610c85"
+}
+
+### Checkout
+POST http://localhost:3000/checkout/60d21b4667d0d8992e610c87/60d21b4667d0d8992e610c86
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjE5ZWY1NzYwMjIyYmFjY2IzYjU4YyIsImlhdCI6MTc0NzAzMzg1MywiZXhwIjoxNzQ3MDM3NDUzfQ.VTfTknJWOVf6t09q6-rv_Y7aKPqMr1nnVYXO91yFQvM
+
+### Get all orders
+GET http://localhost:3000/orders
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjE5ZWY1NzYwMjIyYmFjY2IzYjU4YyIsImlhdCI6MTc0NzAzMzg1MywiZXhwIjoxNzQ3MDM3NDUzfQ.VTfTknJWOVf6t09q6-rv_Y7aKPqMr1nnVYXO91yFQvM
+
+### Get user's orders
+GET http://localhost:3000/orders/60d21b4667d0d8992e610c86
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjE5ZWY1NzYwMjIyYmFjY2IzYjU4YyIsImlhdCI6MTc0NzAzMzg1MywiZXhwIjoxNzQ3MDM3NDUzfQ.VTfTknJWOVf6t09q6-rv_Y7aKPqMr1nnVYXO91yFQvM
+
+### Update order status
+PUT http://localhost:3000/updateStatus/60d21b4667d0d8992e610c88
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjE5ZWY1NzYwMjIyYmFjY2IzYjU4YyIsImlhdCI6MTc0NzAzMzg1MywiZXhwIjoxNzQ3MDM3NDUzfQ.VTfTknJWOVf6t09q6-rv_Y7aKPqMr1nnVYXO91yFQvM
+Content-Type: application/json
+
+{
+  "status": "shipped"
+}

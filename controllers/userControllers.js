@@ -123,6 +123,7 @@ export const updateUserData = async (req, res) => {
         }
         // Update the profile picture URL based
         await user.save(); // Save the updated user data to the database
+        return res.status(200).json({ message: "User data updated successfully" }); // Send a success response
     } catch (err) {
         console.error(err); // Log the error to the console
         return res.status(500).json({ message: "Internal server error" }); // Send a 500 response if an error occurs

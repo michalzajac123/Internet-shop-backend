@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
 const categoryRouter = express.Router();
-const categoryController = require('../controllers/cartController');
+import * as categoryController from '../controllers/categoryController.js';
 
-categoryRouter.get('/', categoryController.showAllCategories);
+categoryRouter.get('/categories', categoryController.showAllCategories);
 
-module.exports = categoryRouter;
+export default categoryRouter;

@@ -1,32 +1,41 @@
-const express = require('express');
-const { validator } = require('express-validator');
+import express from 'express';
+import { body, param } from 'express-validator';
+import authMiddleware from '../middleware/authMiddleware.js';
+import adminMiddleware from '../middleware/adminMiddleware.js';
 const productRouter = express.Router();
-const productController = require('../controllers/productController');
-
+import { 
+  createProduct, 
+  getAllProducts, 
+  getProductById, 
+  filterProducts, 
+  approveProduct 
+} from '../controllers/productController.js';
 
 productRouter.post("/product",
-    validator("name").notEmpty().withMessage("Name is required"),
-    validator("description").notEmpty().withMessage("Description is required"),
-    validator("price").isNumeric().withMessage("Price must be a number"),
-    validator("photo").notEmpty().withMessage("Photo is required"),
-    validator("category").notEmpty().withMessage("Category is required"),
-    validator("subcategory").notEmpty().withMessage("Subcategory is required"),
-    productController.createProduct
+    body("name").notEmpty().withMessage("Name is required"),
+    body("description").notEmpty().withMessage("Description is required"),
+    body("price").isNumeric().withMessage("Price must be a number"),
+    body("photo").notEmpty().withMessage("Photo is required"),
+    body("category").notEmpty().withMessage("Category is required"),
+    body("subcategory").notEmpty().withMessage("Subcategory is required"),
+    createProduct
 );
 
-productRouter.get("/products", productController.getAllProducts);
+productRouter.get("/products", getAllProducts);
 
 productRouter.get("/product/:id",
-    validator("id").isMongoId().withMessage("Invalid product ID"),
-    productController.getProductById
+    param("id").isMongoId().withMessage("Invalid product ID"),
+    getProductById
 );
 
-productRouter.get("/products", productController.filterProducts);
+productRouter.get("/filter", filterProducts);
 
-// TODO: add middleware to check if the user is an admin
+// Admin middleware added to protect the approval route
 productRouter.put("/product/:id/approve",
-    validator("id").isMongoId().withMessage("Invalid product ID"),
-    productController.approveProduct
+    authMiddleware,
+    adminMiddleware,
+    param("id").isMongoId().withMessage("Invalid product ID"),
+    approveProduct
 );
 
-module.exports = productRouter;
+export default productRouter;

@@ -1,14 +1,14 @@
-const express = require("express");
-const { validator } = require("express-validator");
+import express from "express";
+import { checkout, getPastOrders, getPastOrdersByUserId, updateStatusOfOrder } from "../controllers/orderController.js";
+
 const orderRouter = express.Router();
-const orderController = require("../controllers/orderController");
 
-orderRouter.post("/checkout/:cartId/:id", orderController.checkout);
+orderRouter.post("/checkout/:cartId/:id", checkout);
 
-orderRouter.get("/orders", orderController.getPastOrders);
+orderRouter.get("/orders", getPastOrders);
 
-orderRouter.get("/orders/:id", orderController.getPastOrdersByUserId);
+orderRouter.get("/orders/:id", getPastOrdersByUserId);
 
-orderRouter.put("/updateStatus/:id", orderController.updateStatusOfOrder);
+orderRouter.put("/updateStatus/:id", updateStatusOfOrder);
 
-module.exports = orderRouter;
+export default orderRouter;

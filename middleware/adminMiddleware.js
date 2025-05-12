@@ -2,7 +2,6 @@ import User from '../models/User.js';
 
 const adminMiddleware = async (req, res, next) => {
     try {
-        // Assuming authentication middleware has already run and set req.user.id
         if (!req.user || !req.user.id) {
             return res.status(401).json({ message: 'Not authenticated' });
         }

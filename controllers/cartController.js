@@ -1,6 +1,7 @@
-const { validationResult } = require("express-validator");
-const Cart = require("../models/Cart");
-const Product = require("../models/Product");
+import { validationResult } from "express-validator";
+import Cart from "../models/Cart.js";
+import Product from "../models/Product.js";
+import mongoose from "mongoose"; // Add this import
 
 /**
  * @description Add a product to the user's cart. This function validates the request body,
@@ -10,7 +11,7 @@ const Product = require("../models/Product");
  *  @param {Object} req - The request object containing product ID and quantity in the body.
  * @param {Object} res - The response object used to send back the HTTP response.
  */
-exports.addToCart = async (req, res) => {
+export const addToCart = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -20,6 +21,11 @@ exports.addToCart = async (req, res) => {
   const userId = req.params.id;
 
   try {
+    // Validate productId is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(productId)) {
+      return res.status(400).json({ message: "Invalid product ID format" });
+    }
+
     // Check if the product exists
     const product = await Product.findById(productId);
     if (!product) {
@@ -30,26 +36,27 @@ exports.addToCart = async (req, res) => {
     let cart = await Cart.findOne({ userId });
     if (!cart) {
       // Create a new cart if it doesn't exist
-      cart = new Cart({ userId, items: [] });
+      cart = new Cart({ userId, products: [] });
     }
-
-    // Check if the product is already in the cart
-    const existingItemIndex = cart.items.findIndex(
-      (item) => item.product.toString() === productId
+    
+    // Check if the product is already in the cart - using proper ObjectId comparison
+    const existingItemIndex = cart.products.findIndex(
+      (item) => item.productId && item.productId.toString() === productId.toString()
     );
-
+    
     if (existingItemIndex > -1) {
       // Update the quantity of the existing item
-      cart.items[existingItemIndex].quantity += quantity;
+      cart.products[existingItemIndex].quantity += quantity;
     } else {
-      // Add a new item to the cart
-      cart.items.push({ product: productId, quantity });
+      // Add a new item to the cart - using correct property names from the schema
+      cart.products.push({ productId: productId, quantity: quantity });
     }
 
     await cart.save();
-    res.status(200).json(cart);
+    res.status(200).json(cart); 
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    console.error("Cart error:", error); // Log the actual error for debugging
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
@@ -60,12 +67,12 @@ exports.addToCart = async (req, res) => {
  * @param {Object} req - The request object containing the user ID in the request object.
  * @param {Object} res - The response object used to send back the HTTP response.
  */
-exports.getCart = async (req, res) => {
-  const userId = req.params.id; // Assuming you have user ID in req.user
+export const getCart = async (req, res) => {
+  const userId = req.params.id;
 
   try {
     // Check if the cart exists for the user
-    const cart = await Cart.findOne({ userId }).populate("items.product");
+    const cart = await Cart.findOne({ userId }).populate("products.productId");
     if (!cart) {
       return res.status(404).json({ message: "Cart not found" });
     }
@@ -85,7 +92,7 @@ exports.getCart = async (req, res) => {
  * @param {Object} res - The response object used to send back the HTTP response.
  * @returns {void}
  */
-exports.removeFromCart = async (req, res) => {
+export const removeFromCart = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -102,8 +109,8 @@ exports.removeFromCart = async (req, res) => {
     }
 
     // Check if the product is in the cart
-    const existingItemIndex = cart.items.findIndex(
-      (item) => item.product.toString() === productId
+    const existingItemIndex = cart.products.findIndex(
+      (item) => item.productId && item.productId.toString() === productId
     );
 
     if (existingItemIndex === -1) {
@@ -111,7 +118,7 @@ exports.removeFromCart = async (req, res) => {
     }
 
     // Remove the product from the cart
-    cart.items.splice(existingItemIndex, 1);
+    cart.products.splice(existingItemIndex, 1);
     await cart.save();
 
     res.status(200).json(cart);

@@ -1,6 +1,6 @@
-const Order = require("../models/orderModel");
+import Order from "../models/Order.js";
 
-exports.checkout = async (req, res) => {
+export const checkout = async (req, res) => {
   const cartId = req.params.cartId;
 
   try {
@@ -38,7 +38,7 @@ exports.checkout = async (req, res) => {
  * @param {Object} req - The request object containing the user ID in the parameters.
  * @param {Object} res - The response object used to send back the HTTP response.
  */
-exports.getPastOrdersByUserId = async (req, res) => {
+export const getPastOrdersByUserId = async (req, res) => {
   const userId = req.params.id;
 
   try {
@@ -57,7 +57,7 @@ exports.getPastOrdersByUserId = async (req, res) => {
  * @param {Object} req - The request object containing the user ID in the parameters.
  * @param {Object} res - The response object used to send back the HTTP response.
  */
-exports.getPastOrders = async (req, res) => {
+export const getPastOrders = async (req, res) => {
   try {
     const orders = await Order.findAll().populate("products.productId");
     res.status(200).json(orders);
@@ -75,7 +75,7 @@ exports.getPastOrders = async (req, res) => {
  * @param {Object} req - The request object containing the order ID in the parameters and new status in the body.
  * @param {Object} res - The response object used to send back the HTTP response.
  */
-exports.updateStatusOfOrder = async (req, res) => {
+export const updateStatusOfOrder = async (req, res) => {
   const orderId = req.params.id;
   const { status } = req.body;
 

@@ -1,5 +1,5 @@
-const { validationResult } = require("express-validator");
-const Product = require("../models/Product");
+import { validationResult } from "express-validator";
+import Product from "../models/Product.js";
 
 /**
  * @description Create a new product in the database. This function validates the request body,
@@ -10,14 +10,14 @@ const Product = require("../models/Product");
  * @param {Object} res - The response object used to send back the HTTP response.
  * @returns {void}
  */
-exports.createProduct = async (req, res) => {
+export const createProduct = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
 
   const { name, description, price, photo, category, subcategory } = req.body;
-
+  console.log(req.body);
   try {
     const newProduct = new Product({
       name,
@@ -26,11 +26,11 @@ exports.createProduct = async (req, res) => {
       photo,
       category,
       subcategory,
-      status: "inactive",
+      status: "inactive"
     });
 
     await newProduct.save();
-    res.status(201).json(newDish);
+    res.status(201).json(newProduct); 
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
@@ -44,7 +44,7 @@ exports.createProduct = async (req, res) => {
  * @param {*} res - The response object used to send back the HTTP response.
  * @returns {void}
  */
-exports.getAllProducts = async (req, res) => {
+export const getAllProducts = async (req, res) => {
   try {
     const products = await Product.find();
     res.status(200).json(products);
@@ -62,7 +62,7 @@ exports.getAllProducts = async (req, res) => {
  * @param {Object} res - The response object used to send back the HTTP response.
  * @returns {void}
  */
-exports.getProductById = async (req, res) => {
+export const getProductById = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
     if (!product) {
@@ -83,7 +83,7 @@ exports.getProductById = async (req, res) => {
  * @param {Object} res - The response object used to send back the HTTP response.
  * @return {void}
  */
-exports.approveProduct = async (req, res) => {
+export const approveProduct = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
     if (!product) {
@@ -108,7 +108,7 @@ exports.approveProduct = async (req, res) => {
 * @param {Object} res - The response object used to send back the HTTP response.
 * @return {void}
 */
-exports.filterProducts = async (req, res) => {
+export const filterProducts = async (req, res) => {
   const { category, subcategory, name } = req.query;
   try {
     const query = {};
